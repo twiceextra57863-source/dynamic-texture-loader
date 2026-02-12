@@ -207,7 +207,7 @@ public class PreviewWidget implements Drawable, Element, Selectable {
             
             itemRenderer.renderItem(
                 previewItem,
-                ModelTransformationMode.GUI,
+                ModelTransformation.Mode.GUI,
                 false,
                 matrices,
                 immediate,
