@@ -1,0 +1,62 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: ☕ Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: gradle
+        
+    - name: 🔧 Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: 🏗️ Build with Gradle
+      run: ./gradlew build
+      
+    - name: 📝 Get version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      
+    - name: 🚀 Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: build/libs/*.jar
+        name: Release v${{ steps.get_version.outputs.VERSION }}
+        body: |
+          ## Dynamic Texture Loader v${{ steps.get_version.outputs.VERSION }}
+          
+          ### 📦 Installation
+          1. Install [Fabric Loader](https://fabricmc.net/)
+          2. Install [Fabric API](https://modrinth.com/mod/fabric-api)
+          3. Download the JAR file below
+          4. Put it in your `.minecraft/mods` folder
+          
+          ### ✨ Features
+          - Dynamic texture loading from resource packs
+          - Easy-to-use GUI (Press T)
+          - Client-side only (works on servers!)
+          - Profile saving system
+          
+          ### 🐛 Bug Reports
+          Report issues [here](https://github.com/${{ github.repository }}/issues)
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
