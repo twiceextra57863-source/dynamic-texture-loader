@@ -7,7 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -39,7 +39,7 @@ public class CustomItemRenderer {
      */
     public void renderCustomItem(
         ItemStack stack,
-        ModelTransformation.Mode renderMode,
+        ModelTransformationMode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
@@ -111,7 +111,7 @@ public class CustomItemRenderer {
      */
     private void renderWithCustomModel(
         ItemStack stack,
-        ModelTransformation.Mode renderMode,
+        ModelTransformationMode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
@@ -150,7 +150,7 @@ public class CustomItemRenderer {
      */
     private void renderWithCustomTexture(
         ItemStack stack,
-        ModelTransformation.Mode renderMode,
+        ModelTransformationMode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
@@ -186,7 +186,7 @@ public class CustomItemRenderer {
      */
     private void renderOriginal(
         ItemStack stack,
-        ModelTransformation.Mode renderMode,
+        ModelTransformationMode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
