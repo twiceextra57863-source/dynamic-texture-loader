@@ -39,7 +39,7 @@ public class CustomItemRenderer {
      */
     public void renderCustomItem(
         ItemStack stack,
-        ModelTransformationMode renderMode,
+        ModelTransformation.Mode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
@@ -111,7 +111,7 @@ public class CustomItemRenderer {
      */
     private void renderWithCustomModel(
         ItemStack stack,
-        ModelTransformationMode renderMode,
+        ModelTransformation.Mode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
@@ -150,7 +150,7 @@ public class CustomItemRenderer {
      */
     private void renderWithCustomTexture(
         ItemStack stack,
-        ModelTransformationMode renderMode,
+        ModelTransformation.Mode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
@@ -186,7 +186,7 @@ public class CustomItemRenderer {
      */
     private void renderOriginal(
         ItemStack stack,
-        ModelTransformationMode renderMode,
+        ModelTransformation.Mode renderMode,
         boolean leftHanded,
         MatrixStack matrices,
         VertexConsumerProvider vertexConsumers,
@@ -211,7 +211,7 @@ public class CustomItemRenderer {
     /**
      * Apply transformations based on render mode
      */
-    private void applyTransformations(MatrixStack matrices, ModelTransformationMode mode, boolean leftHanded) {
+    private void applyTransformations(MatrixStack matrices, ModelTransformation.Mode mode, boolean leftHanded) {
         switch (mode) {
             case FIRST_PERSON_LEFT_HAND:
             case FIRST_PERSON_RIGHT_HAND:
