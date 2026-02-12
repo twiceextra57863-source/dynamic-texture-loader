@@ -1,6 +1,7 @@
 package com.yourname.dynamictexture.client.gui;
 
 import com.yourname.dynamictexture.DynamicTextureLoader;
+import com.yourname.dynamictexture.client.gui.widgets.PreviewWidget;
 import com.yourname.dynamictexture.config.TextureProfile;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -18,6 +19,7 @@ public class TextureInputScreen extends Screen {
     private TextFieldWidget textureField;
     private TextFieldWidget modelField;
     private ButtonWidget applyButton;
+    private PreviewWidget previewWidget; // ← NEW!
     
     private String statusMessage = null;
     private boolean isError = false;
@@ -31,14 +33,23 @@ public class TextureInputScreen extends Screen {
     @Override
     protected void init() {
         int centerX = this.width / 2;
-        int formWidth = 320;
+        int formWidth = 300;
         int startY = 70;
         
+        // Create preview widget (RIGHT SIDE)
+        int previewX = centerX + 20;
+        int previewY = startY;
+        int previewSize = 200;
+        
+        this.previewWidget = new PreviewWidget(previewX, previewY, previewSize, previewSize);
+        
+        // Adjust form to LEFT SIDE
+        int formX = centerX - formWidth - 20;
+        
         // Namespace field
-        Text namespaceLabel = Text.literal("Namespace:");
         this.namespaceField = new TextFieldWidget(
             this.textRenderer,
-            centerX - formWidth / 2,
+            formX,
             startY + 20,
             formWidth,
             20,
@@ -46,13 +57,13 @@ public class TextureInputScreen extends Screen {
         );
         this.namespaceField.setMaxLength(50);
         this.namespaceField.setText("minecraft");
+        this.namespaceField.setChangedListener(this::onNamespaceChanged);
         this.addSelectableChild(this.namespaceField);
         
         // Texture field
-        Text textureLabel = Text.literal("Texture Name:");
         this.textureField = new TextFieldWidget(
             this.textRenderer,
-            centerX - formWidth / 2,
+            formX,
             startY + 70,
             formWidth,
             20,
@@ -60,13 +71,13 @@ public class TextureInputScreen extends Screen {
         );
         this.textureField.setMaxLength(100);
         this.textureField.setPlaceholder(Text.literal("e.g. custom_sword"));
+        this.textureField.setChangedListener(this::onTextureChanged);
         this.addSelectableChild(this.textureField);
         
         // Model field
-        Text modelLabel = Text.literal("Model Name (Optional):");
         this.modelField = new TextFieldWidget(
             this.textRenderer,
-            centerX - formWidth / 2,
+            formX,
             startY + 120,
             formWidth,
             20,
@@ -74,6 +85,7 @@ public class TextureInputScreen extends Screen {
         );
         this.modelField.setMaxLength(100);
         this.modelField.setPlaceholder(Text.literal("Leave empty for texture only"));
+        this.modelField.setChangedListener(this::onModelChanged);
         this.addSelectableChild(this.modelField);
         
         // Apply button
@@ -81,16 +93,16 @@ public class TextureInputScreen extends Screen {
             Text.literal("Apply Texture"),
             button -> applyTexture()
         )
-        .dimensions(centerX - formWidth / 2, startY + 160, formWidth, 25)
+        .dimensions(formX, startY + 160, formWidth, 25)
         .build();
         this.addDrawableChild(this.applyButton);
         
         // Save Profile button
         this.addDrawableChild(ButtonWidget.builder(
-            Text.literal("Save as Profile"),
+            Text.literal("Save Profile"),
             button -> saveProfile()
         )
-        .dimensions(centerX - formWidth / 2, startY + 190, (formWidth / 2) - 5, 20)
+        .dimensions(formX, startY + 190, (formWidth / 2) - 5, 20)
         .build());
         
         // Cancel button
@@ -98,8 +110,54 @@ public class TextureInputScreen extends Screen {
             ScreenTexts.CANCEL,
             button -> this.close()
         )
-        .dimensions(centerX + 5, startY + 190, (formWidth / 2) - 5, 20)
+        .dimensions(formX + (formWidth / 2) + 5, startY + 190, (formWidth / 2) - 5, 20)
         .build());
+        
+        // Update preview with current held item
+        if (this.client.player != null) {
+            ItemStack heldItem = this.client.player.getMainHandStack();
+            if (!heldItem.isEmpty()) {
+                this.previewWidget.setPreviewItem(heldItem);
+            }
+        }
+    }
+    
+    /**
+     * Called when namespace field changes
+     */
+    private void onNamespaceChanged(String namespace) {
+        updatePreview();
+    }
+    
+    /**
+     * Called when texture field changes
+     */
+    private void onTextureChanged(String texture) {
+        updatePreview();
+    }
+    
+    /**
+     * Called when model field changes
+     */
+    private void onModelChanged(String model) {
+        updatePreview();
+    }
+    
+    /**
+     * Update preview widget
+     */
+    private void updatePreview() {
+        String namespace = namespaceField.getText().trim();
+        String texture = textureField.getText().trim();
+        String model = modelField.getText().trim();
+        
+        if (!texture.isEmpty()) {
+            previewWidget.setTexture(namespace, texture);
+        }
+        
+        if (!model.isEmpty()) {
+            previewWidget.setModel(namespace, model);
+        }
     }
     
     private void applyTexture() {
@@ -193,11 +251,13 @@ public class TextureInputScreen extends Screen {
         );
         
         // Labels
+        int formX = centerX - 320;
         int startY = 70;
+        
         context.drawTextWithShadow(
             this.textRenderer,
             Text.literal("Namespace:"),
-            centerX - 160,
+            formX,
             startY + 8,
             0xFFFFFF
         );
@@ -205,7 +265,7 @@ public class TextureInputScreen extends Screen {
         context.drawTextWithShadow(
             this.textRenderer,
             Text.literal("Texture Name:"),
-            centerX - 160,
+            formX,
             startY + 58,
             0xFFFFFF
         );
@@ -213,13 +273,25 @@ public class TextureInputScreen extends Screen {
         context.drawTextWithShadow(
             this.textRenderer,
             Text.literal("Model Name (Optional):"),
-            centerX - 160,
+            formX,
             startY + 108,
             0xFFFFFF
         );
         
+        // Render preview widget
+        previewWidget.render(context, mouseX, mouseY, delta);
+        
         // Render text fields and buttons
         super.render(context, mouseX, mouseY, delta);
+        
+        // Preview instructions
+        context.drawCenteredTextWithShadow(
+            this.textRenderer,
+            Text.literal("Click preview to toggle rotation"),
+            centerX + 120,
+            startY + 215,
+            0xFF888888
+        );
         
         // Status message
         if (statusMessage != null) {
@@ -251,7 +323,16 @@ public class TextureInputScreen extends Screen {
     }
     
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        // Let preview widget handle clicks
+        if (previewWidget.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+    
+    @Override
     public void close() {
         this.client.setScreen(this.parent);
     }
-              }
+    }
