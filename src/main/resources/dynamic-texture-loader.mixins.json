@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.yourname.dynamictexture.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ItemRendererMixin",
+    "HeldItemFeatureRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
