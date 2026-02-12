@@ -22,17 +22,22 @@ jobs:
         distribution: 'temurin'
         cache: gradle
         
+    - name: 🔧 Validate Gradle Wrapper
+      uses: gradle/wrapper-validation-action@v3
+        
     - name: 🔧 Grant execute permission for gradlew
       run: chmod +x gradlew
       
     - name: 🏗️ Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew build --no-daemon --stacktrace
       
     - name: 📦 Upload Build Artifacts
       uses: actions/upload-artifact@v4
+      if: success()
       with:
         name: mod-jar
         path: build/libs/*.jar
+        retention-days: 30
         
     - name: 📊 Upload Build Reports (on failure)
       if: failure()
@@ -40,3 +45,4 @@ jobs:
       with:
         name: build-reports
         path: build/reports/
+        retention-days: 7
