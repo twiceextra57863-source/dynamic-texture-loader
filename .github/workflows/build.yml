@@ -2,7 +2,8 @@ name: Build Mod
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
 
 jobs:
@@ -10,13 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set up JDK
+      # Setup Java 21 (Required for MC 1.21+)
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
+          cache: gradle
 
+      # Fix permission issue for gradlew
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      # Build the mod
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
