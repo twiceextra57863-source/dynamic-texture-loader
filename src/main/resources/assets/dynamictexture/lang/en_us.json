@@ -1,0 +1,22 @@
+{
+  "key.dynamictexture.openmenu": "Open Texture Menu",
+  "category.dynamictexture": "Dynamic Texture Loader",
+  
+  "gui.dynamictexture.title": "Dynamic Texture Loader",
+  "gui.dynamictexture.resourcepacks": "Select Resource Pack",
+  "gui.dynamictexture.input.title": "Configure Texture/Model",
+  "gui.dynamictexture.input.model": "Model Name",
+  "gui.dynamictexture.input.texture": "Texture Name",
+  "gui.dynamictexture.input.namespace": "Namespace",
+  "gui.dynamictexture.input.apply": "Apply",
+  "gui.dynamictexture.input.cancel": "Cancel",
+  "gui.dynamictexture.input.preview": "Preview",
+  "gui.dynamictexture.profiles": "Saved Profiles",
+  "gui.dynamictexture.profiles.save": "Save Profile",
+  "gui.dynamictexture.profiles.load": "Load Profile",
+  "gui.dynamictexture.nopack": "No resource pack selected!",
+  "gui.dynamictexture.success": "Applied successfully!",
+  "gui.dynamictexture.error": "Failed to load texture/model",
+  
+  "config.dynamictexture.title": "Dynamic Texture Loader Config"
+}
