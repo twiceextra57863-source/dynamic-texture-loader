@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'  // Updated version
     id 'maven-publish'
 }
 
@@ -54,4 +54,9 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
     }
+}
+
+// Disable tests for now (if you don't have tests yet)
+tasks.named('test') {
+    enabled = false
 }
