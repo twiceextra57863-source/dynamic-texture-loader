@@ -211,7 +211,7 @@ public class CustomItemRenderer {
     /**
      * Apply transformations based on render mode
      */
-    private void applyTransformations(MatrixStack matrices, ModelTransformation.Mode mode, boolean leftHanded) {
+    private void applyTransformations(MatrixStack matrices, ModelTransformationMode mode, boolean leftHanded) {
         switch (mode) {
             case FIRST_PERSON_LEFT_HAND:
             case FIRST_PERSON_RIGHT_HAND:
