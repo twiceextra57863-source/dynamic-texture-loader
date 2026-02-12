@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "dynamictexture",
+  "version": "${version}",
+  "name": "Dynamic Texture Loader",
+  "description": "Load custom textures and models from resource packs dynamically!",
+  "authors": [
+    "YourName"
+  ],
+  "contact": {
+    "homepage": "https://github.com/yourusername/dynamic-texture-loader",
+    "sources": "https://github.com/yourusername/dynamic-texture-loader",
+    "issues": "https://github.com/yourusername/dynamic-texture-loader/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/dynamictexture/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.yourname.dynamictexture.DynamicTextureLoader"
+    ]
+  },
+  "mixins": [
+    "dynamic-texture-loader.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21.4",
+    "java": ">=21"
+  },
+  "suggests": {
+    "cloth-config": ">=11.0.0"
+  }
+}
