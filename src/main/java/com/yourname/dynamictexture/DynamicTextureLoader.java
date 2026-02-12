@@ -1,3 +1,5 @@
+package com.yourname.dynamictexture;
+
 import com.yourname.dynamictexture.client.KeyBindings;
 import com.yourname.dynamictexture.client.gui.ResourcePackScreen;
 import com.yourname.dynamictexture.client.renderer.AnimationHandler;
